@@ -1,10 +1,11 @@
 name: Orbis672
 
 on:
-  push:
-    branches: [ master, develop ]
-  pull_request:
-    branches: [ master, develop ]
+  workflow_dispatch
+  #push:
+  #  branches: [ master, develop ]
+  #pull_request:
+  #  branches: [ master, develop ]
 
 jobs:
   build:
@@ -29,33 +30,33 @@ jobs:
         # 6.72 Support
       - name: make 6.72 loader
         run: cd loader; MIRA_PLATFORM=MIRA_PLATFORM_ORBIS_BSD_672 MIRA_CHECKS=TRUE pvs-studio-analyzer trace -- make
-      - name: generate 6.72 loader pvs report
-        run: cd loader; pvs-studio-analyzer analyze -e ../external/ -o project.log; plog-converter -a GA:1,2 -t fullhtml -o pvs-html project.log; plog-converter -a GA:1,2 -t tasklist -o report.tasks project.log
+      #- name: generate 6.72 loader pvs report
+      #  run: cd loader; pvs-studio-analyzer analyze -e ../external/ -o project.log; plog-converter -a GA:1,2 -t fullhtml -o pvs-html project.log; plog-converter -a GA:1,2 -t tasklist -o report.tasks project.log
       - name: make 6.72 elf
         run: cd kernel; MIRA_PLATFORM=MIRA_PLATFORM_ORBIS_BSD_672 ADD_GIT_HASH=TRUE MIRA_CHECKS=TRUE pvs-studio-analyzer trace -- make
-      - name: generate 6.72 elf pvs report
-        run: cd kernel; pvs-studio-analyzer analyze -e ../external/ -e src/External/ -e src/Messaging/Rpc/rpc.pb-c.c -e src/Plugins/FileManager/filemanager.pb-c.c -o project.log; plog-converter -a GA:1,2 -t fullhtml -o pvs-html project.log; plog-converter -a GA:1,2 -t tasklist -o report.tasks project.log
+      #- name: generate 6.72 elf pvs report
+      #  run: cd kernel; pvs-studio-analyzer analyze -e ../external/ -e src/External/ -e src/Messaging/Rpc/rpc.pb-c.c -e src/Plugins/FileManager/filemanager.pb-c.c -o project.log; plog-converter -a GA:1,2 -t fullhtml -o pvs-html project.log; plog-converter -a GA:1,2 -t tasklist -o report.tasks project.log
       - name: Upload 6.72 loader
         uses: actions/upload-artifact@v2
         with:
           name: MiraLoader_Orbis_MIRA_PLATFORM_ORBIS_BSD_672.bin
           path: loader/build/MiraLoader_Orbis_MIRA_PLATFORM_ORBIS_BSD_672.bin
-      - name: Upload 6.72 loader pvs report
-        uses: actions/upload-artifact@v2
-        with:
-          name: MiraLoader_PVS_Report
-          path: |
-            loader/report.tasks
-            loader/pvs-html/
+      #- name: Upload 6.72 loader pvs report
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: MiraLoader_PVS_Report
+      #    path: |
+      #      loader/report.tasks
+      #      loader/pvs-html/
       - name: Upload 6.72 elf
         uses: actions/upload-artifact@v2
         with:
           name: Mira_Orbis_MIRA_PLATFORM_ORBIS_BSD_672.elf
           path: kernel/build/Mira_Orbis_MIRA_PLATFORM_ORBIS_BSD_672.elf
-      - name: Upload 6.72 elf pvs report
-        uses: actions/upload-artifact@v2
-        with:
-          name: Mira_PVS_Report
-          path: |
-            kernel/report.tasks
-            kernel/pvs-html/
+      #- name: Upload 6.72 elf pvs report
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: Mira_PVS_Report
+      #    path: |
+      #      kernel/report.tasks
+      #      kernel/pvs-html/
